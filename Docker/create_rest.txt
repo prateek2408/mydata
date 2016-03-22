@@ -1,0 +1,19 @@
+curl -X POST -H "Content-Type: application/json" http://10.184.47.176:4243/containers/create -d '{
+	     "Hostname":"",
+	     "User":"",
+	     "Memory":0,
+	     "MemorySwap":0,
+	     "AttachStdin":false,
+	     "AttachStdout":true,
+	     "AttachStderr":true,
+	     "PortSpecs":null,
+	     "Privileged": false,
+	     "Tty":false,
+	     "OpenStdin":false,
+	     "StdinOnce":false,
+             "Env": [
+               "WORDPRESS_DB_PASSWORD=test123"
+             ],
+	     "Image":"wordpress",
+             "Links": ["wordpressdb:mysql"]
+	}

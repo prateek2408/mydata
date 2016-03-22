@@ -1,0 +1,20 @@
+mediawiki1:
+  ports:
+  - 9000:80/tcp
+  environment:
+    MEDIAWIKI_DB_HOST: 65.65.65.94
+    MEDIAWIKI_DB_USER: root
+    MEDIAWIKI_DB_PASSWORD: test123
+  labels:
+    io.rancher.container.pull_image: always
+  tty: true
+  image: synctree/mediawiki
+  stdin_open: true
+Loader:
+  ports:
+  - 10000:80
+  tty: true
+  image: rancher/load-balancer-service
+  links:
+  - mediawiki1:mediawiki1
+  stdin_open: true

@@ -1,0 +1,5 @@
+qemu-img convert -f vdi -O qcow2 vm.vdi vm.qcow2
+
+To setup a proxy with docker that requires setting the HTTP_PROXY environment variable.  In the latest release dev build of RancherOS (v0.3.1-rc2), this can be set through a configuration file.  You can edit /var/lib/rancher/conf/docker and put the following in the file
+
+export HTTP_PROXY=http://example.com

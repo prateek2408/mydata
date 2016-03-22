@@ -1,0 +1,21 @@
+heat_template_version: 2014-10-16  
+description: Operating system template  
+
+parameters:
+  ImageID:
+    type: string
+    description: Image ID
+    default: cirros
+
+resources:  
+  server:
+    type: OS::Nova::Server
+    properties:
+      flavor: m1.tiny
+      image: { get_param: ImageID }
+      networks:
+        - network: mynetwork
+      user_data_format: RAW
+      user_data: |
+        #!/bin/sh
+        while [ 1 ] ; do echo $((13**99)) 1>/dev/null 2>&1; done

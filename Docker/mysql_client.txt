@@ -1,0 +1,6 @@
+docker run -it --link wordpressdb:mysql --rm mysql:5.7 sh -c 'exec mysql -h"$MYSQL_PORT_3306_TCP_ADDR" -P"$MYSQL_PORT_3306_TCP_PORT" -uroot -p"$MYSQL_ENV_MYSQL_ROOT_PASSWORD"'
+
+
+docker run -p 12.12.12.34:8778:80 --name mediawiki --link wordpressdb:mysql -d synctree/mediawiki
+
+docker run -d --link wordpressdb:mysql -p 12.12.12.34:8779:9001 tvelocity/etherpad-lite

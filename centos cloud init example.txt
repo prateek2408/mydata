@@ -1,0 +1,15 @@
+#cloud-config
+            password: mysecret
+            chpasswd: { expire: False }
+            ssh_pwauth: True
+
+
+#cloud-config
+chpasswd:
+  list: |
+    user1:password1
+    user2:password2
+    user3:password3
+  expire: False
+
+virt-host-validate

@@ -1,0 +1,44 @@
+heat_template_version: 2015-04-30
+
+description: Hot Template to deploy a single server
+
+parameters:
+  ImageID:
+    type: string
+    description: Image ID
+    default: docker_img
+  private_network:
+    type: string
+    label: Internal network
+    description: Network to attach instance to.
+    default: mynetwork
+  floating_ip:
+    type: string
+    label: Floating Ip to be used
+    default: d4199235-b998-4bd1-94d9-ca94f849ad62
+
+resources:
+  dockpress:
+    type: OS::Nova::Server
+    properties:
+      flavor: "m1.small"
+      image: { get_param: ImageID }
+      name: "docker_vm"
+      key_name: docker_vm
+      networks:
+        - network: { get_param: private_network }
+      user_data_format: RAW
+      user_data:  |
+        #!/bin/bash -v
+        docker start `docker ps -a| grep mysql | awk '{print $1}'`
+        docker run -e WORDPRESS_DB_PASSWORD=test123 -d --name wordpress --link wordpressdb:mysql -p `ifconfig eth0 | grep -w "inet addr" |cut -d: -f2 | awk '{print $1}'`:80:80  wordpress
+
+  assosiation:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_param: floating_ip }
+      server_id: { get_resource: dockpress }
+outputs:
+  dockpress_ip:
+    description: IP of the server
+    value: { get_attr: [ dockpress, first_address ] }
