@@ -1,0 +1,34 @@
+heat_template_version: 2014-10-16  
+description: Operating system template  
+
+parameters:
+  ImageID:
+    type: string
+    description: Image ID
+    default: docker_host
+
+resources:  
+  docker_key:
+    type: OS::Nova::KeyPair
+    properties:
+      save_private_key: true
+      name: docker_key
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      flavor: m1.medium
+      image: { get_param: ImageID }
+      networks:
+        - network: mynetwork
+      key_name:  { get_resource: docker_key }
+      user_data_format: RAW
+      user_data: |
+        #!/bin/bash
+        sudo rm -rf /var/lib/rancher/state/
+        sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/rancher:/var/lib/rancher rancher/agent:v0.10.0 http://65.65.65.78:8080/v1/scripts/7C98B3717FA9481E9021:1458032400000:9nZbAs9FK8xFhSV1AZrZTSukXE
+
+outputs:
+  private_key:
+    description: Private key
+    value: { get_attr: [ docker_key, private_key ] }

@@ -1,0 +1,22 @@
+heat_template_version: 2014-10-16  
+description: Operating system template  
+
+parameters:
+  ImageID:
+    type: string
+    description: Image ID
+    default: docker_host
+
+resources:  
+  server:
+    type: OS::Nova::Server
+    properties:
+      flavor: docker_host
+      image: { get_param: ImageID }
+      networks:
+        - network: mynetwork
+      user_data_format: RAW
+      user_data: |
+        #!/bin/bash
+        sudo rm -rf /var/lib/rancher/state/
+        sudo docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/rancher:/var/lib/rancher rancher/agent:v0.10.0 http://65.65.65.112:8080/v1/scripts/7ED4E1E4390DB1BB04B6:1458540000000:qp2uBI69SXDlNYoqu9nMZ6yyhC8
