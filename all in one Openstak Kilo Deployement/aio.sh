@@ -26,10 +26,5 @@ read cindmgmtip
 scp kilocon*.sh root@$conmgmtip:
 ssh root@$conmgmtip sh kilocontroller.sh
 
-scp kilocom*.sh root@$compmgmtip:
-
-scp kilcind*.sh root@$cindmgmtip:
-
-ssh conmgmtip sh kilocontroller.sh
 
 
