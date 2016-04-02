@@ -20,11 +20,20 @@ read netdataip
 echo -n "Enter the Network node external IP"
 read condataip
 
-echo -n "Enter the compute node management IP"
+echo -n "Enter the cinder node management IP"
 read cindmgmtip
 
+echo "
+$conmgmtip controller
+$netmgmtip network
+$compmgmtip compute
+$cindmgmtip cinder
+
+" > ~/hostfile
+exit
+
+
+echo "If passwordless Authentication is not enabled please enter the password when prompted"
+echo "Starting to deploy openstack kilo on controller node"
 scp kilocon*.sh root@$conmgmtip:
 ssh root@$conmgmtip sh kilocontroller.sh
-
-
-
