@@ -45,3 +45,10 @@ ssh -o StrictHostKeyChecking=noroot @$compmgmtip sh kilocompute.sh
 
 echo "Starting to deploy openstack kilo on controller node(Compute Part)"
 ssh -o StrictHostKeyChecking=no root@$conmgmtip sh kiloconcompute.sh
+
+
+echo "Starting to deploy openstack kilo on controller node(Neutron Part)"
+ssh -o StrictHostKeyChecking=no root@$conmgmtip sh kiloconneutron.sh
+
+echo "Starting to deploy openstack kilo on compute node(Neutron part)"
+ssh -o StrictHostKeyChecking=noroot @$compmgmtip sh kilocompneutron.sh
