@@ -33,12 +33,15 @@ $cindmgmtip cinder
 
 
 echo "If passwordless Authentication is not enabled please enter the password when prompted"
-echo "Starting to deploy openstack kilo on controller node"
+echo "Starting to deploy openstack kilo on controller node(Key and Glance)"
 scp -o StrictHostKeyChecking=no ~/hostfile root@$conmgmtip:/etc/hosts
 scp -o StrictHostKeyChecking=no kilocon*.sh root@$conmgmtip:
 ssh -o StrictHostKeyChecking=no root@$conmgmtip sh kilocontroller.sh
 
-echo "Starting to deploy openstack kilo on compute node"
+echo "Starting to deploy openstack kilo on compute node(Nova part)"
 scp -o StrictHostKeyChecking=no ~/hostfile root@$compmgmtip:/etc/hosts
 scp -o StrictHostKeyChecking=no kilocomp*.sh root@$compmgmtip:
-ssh -o StrictHostKeyChecking=noroot @$comptmgmtip sh kilocompute.sh
+ssh -o StrictHostKeyChecking=noroot @$compmgmtip sh kilocompute.sh
+
+echo "Starting to deploy openstack kilo on controller node(Compute Part)"
+ssh -o StrictHostKeyChecking=no root@$conmgmtip sh kiloconcompute.sh
