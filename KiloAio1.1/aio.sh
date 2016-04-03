@@ -30,10 +30,16 @@ $compmgmtip compute
 $cindmgmtip cinder
 
 " > ~/hostfile
-exit
 
 
 echo "If passwordless Authentication is not enabled please enter the password when prompted"
 echo "Starting to deploy openstack kilo on controller node"
+scp ~/hostfile root@$conmgmtip:/etc/hosts
 scp kilocon*.sh root@$conmgmtip:
 ssh root@$conmgmtip sh kilocontroller.sh
+
+echo "Starting to deploy openstack kilo on compute node"
+scp ~/hostfile root@$compmgmtip:/etc/hosts
+scp kilocomp*.sh root@$comptmgmtip
+ssh root@$comptmgmtip kilocompute.sh
+

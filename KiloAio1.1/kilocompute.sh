@@ -40,14 +40,13 @@ dservice "firewalld" "stop"
 #Set the hostname of the node to neede
 hostnamectl set-hostname compute
 
-Adding contents to storage node and all other nodes
->/etc/hosts
-echo "
-88.88.88.3  controller
-88.88.88.7    storage
-88.88.88.5    network
-88.88.88.6   compute
-"  >> /etc/hosts
+#Adding contents to storage node and all other nodes
+#>/etc/hosts
+#echo "
+#88.88.88.3  controller
+#88.88.88.5    network
+#88.88.88.6   compute
+#"  >> /etc/hosts
 
 #Verify connectivity
 ping -c 4 google.com

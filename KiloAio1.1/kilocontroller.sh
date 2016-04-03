@@ -52,13 +52,12 @@ yinstall "wget"
 hostnamectl set-hostname controller
 
 #Adding contents to storage node and all other nodes
->/etc/hosts
-echo "
-88.88.88.3  controller
-88.88.88.7    storage
-88.88.88.5    network
-88.88.88.6   compute
-"  >> /etc/hosts
+#>/etc/hosts
+#echo "
+#88.88.88.3  controller
+#88.88.88.7    storage
+#88.88.88.6   compute
+#"  >> /etc/hosts
 
 #Install NTP
 yinstall "ntp"
