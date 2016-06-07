@@ -1,0 +1,14 @@
+{
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "image": "cirros"
+    }
+  },
+  "id": "ubuntu",
+  "instances": 1,
+  "cpus": 0.5,
+  "mem": 512,
+  "uris": [],
+  "cmd": "ping 8.8.8.8"
+}
