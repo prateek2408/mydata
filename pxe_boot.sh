@@ -143,10 +143,13 @@ mount CentOS-7-x86_64-Minimal-1511.iso  /var/ftp/pub/
 cp /var/ftp/pub/images/pxeboot/vmlinuz /tftpboot/netboot/
 cp /var/ftp/pub/images/pxeboot/initrd.img /tftpboot/netboot/
 
+umount /var/ftp/pub/
+
 openssl passwd -1 "000000" $1$w2UlrRDP$rk9zBcY1PP3fUC3Xv6P6i/
 ks_file
 pxe_menu
- chkconfig dhcpd on
+
+chkconfig dhcpd on
 chkconfig xinetd on
 chkconfig vsftpd on
 
