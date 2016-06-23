@@ -97,17 +97,32 @@ net-tools
 
 pxe_menu() {
 echo "
- default menu.c32
-prompt 0
-timeout 30
-MENU TITLE unixme.com PXE Menu
-LABEL centos7_x64
-MENU LABEL CentOS 7 X64
-KERNEL /netboot/vmlinuz
-APPEND  initrd=/netboot/initrd.img  inst.repo=ftp://$interip/pub  ks=ftp://$interip/pub/ks.cfg
+default coreos
+prompt 1
+timeout 15
+
+display boot.msg
+
+label coreos
+  menu default
+  kernel coreos_production_pxe.vmlinuz
+  append initrd=coreos_production_pxe_image.cpio.gz cloud-config-url=http://$interip/pxe-cloud-config.yml
 " > /tftpboot/pxelinux.cfg/default
 }
 
+cloud_yaml() {
+ echo "
+ #cloud-config
+coreos:
+  units:
+    - name: etcd2.service
+      command: start
+    - name: fleet.service
+      command: start
+ssh_authorized_keys:
+  - ssh-rsa 
+ " > /var/www/html/pxe-cloud-config.yml
+}
 
 echo "=======>>>>>>================"
 echo "A PXE server allows your client computers to boot and install a Linux distribution over the network, without the need of burning Linux iso images, or human interaction"
@@ -126,7 +141,7 @@ interip=`ifconfig $intername | grep -w  inet  | awk '{print $2}'`
 intermask=`ifconfig $intername | grep -w  inet  | awk '{print $4}'`
 
 echo "Installation has started"
-yum install -y dhcp tftp tftp-server syslinux wget vsftpd; ctest
+yum install -y dhcp tftp tftp-server syslinux wget vsftpd httpd; ctest
 dhcpd_conf
 tftp_conf
 
@@ -142,14 +157,14 @@ cp -v /usr/share/syslinux/chain.c32 /tftpboot
 mkdir /tftpboot/pxelinux.cfg
 mkdir -p /tftpboot/netboot/
 
+cd /tftpboot/netboot/
 
-wget http://ftp.iitm.ac.in/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso
-mount CentOS-7-x86_64-Minimal-1511.iso  /var/ftp/pub/
-
-cp /var/ftp/pub/images/pxeboot/vmlinuz /tftpboot/netboot/
-cp /var/ftp/pub/images/pxeboot/initrd.img /tftpboot/netboot/
-
-umount /var/ftp/pub/
+wget https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz
+wget https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz.sig
+wget https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz
+wget https://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz.sig
+gpg --verify coreos_production_pxe.vmlinuz.sig
+gpg --verify coreos_production_pxe_image.cpio.gz.sig
 
 openssl passwd -1 "000000" $1$w2UlrRDP$rk9zBcY1PP3fUC3Xv6P6i/
 ks_file
@@ -158,7 +173,7 @@ pxe_menu
 chkconfig dhcpd on
 chkconfig xinetd on
 chkconfig vsftpd on
-
+cloud_yaml
 
 service vsftpd  restart
 service dhcpd restart
