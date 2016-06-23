@@ -18,8 +18,8 @@ allow booting;
 allow bootp;
 allow unknown-clients;
 # A slightly different configuration for an internal subnet.
-subnet 192.168.0.0 netmask $intermask {
-range 192.168.0.50 192.168.0.253;
+subnet $sub netmask $intermask {
+range $Rstart $Rstop;
 option domain-name-servers $interip;
 option domain-name \"server1.example.com\";
 option routers $interip;
@@ -115,6 +115,12 @@ echo "A PXE server allows your client computers to boot and install a Linux dist
 echo "Please fill the following"
 echo "Interface name on which DHCP server will run ->"
 read intername
+echo "Enter the Subnet of the network"
+read sub
+echo "Enter the start subnet range"
+read Rstart
+echo "Enter the stop subnet range"
+read Rstop
 
 interip=`ifconfig $intername | grep -w  inet  | awk '{print $2}'`
 intermask=`ifconfig $intername | grep -w  inet  | awk '{print $4}'`
