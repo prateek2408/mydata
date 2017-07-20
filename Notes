@@ -1,0 +1,13 @@
+
+Kubelet cloud config Openstack----
+
+---------------------------------------------------
+[Global]
+auth-url=http://x.x.x.x:5000/v2.0/
+username=admin
+password=admin
+region=RegionOne
+tenant-id=<ID>
+tenant-name=admin
+
+---------------------------------------------------
